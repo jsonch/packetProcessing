@@ -21,6 +21,9 @@
 using namespace std;
 
 
+// Simple packet processor that tracks per-flow packet counts.
+
+
 // g++ packetProcessor.cpp -o packetProcessor -lpcap -std=c++11
 // ./packetProcessor ~jsonch/datasets/caida2015/caida2015_02_dirA.pcap
 
