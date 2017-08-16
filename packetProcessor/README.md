@@ -16,3 +16,4 @@ This is a simple c++ packet processor that tracks per-flow packet counts. It con
 #### Notes: ####
 
 - Set TRACETYPE to 0 or 1 depending on whether you are using a ethernet or IP pcap. 
+- Add custom processing to the function: ```void packetHandler(PacketMetadata pkt);```
