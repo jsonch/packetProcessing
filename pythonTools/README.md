@@ -1,4 +1,4 @@
-# tools for generating and replaying packets into the network. 
+### Simple python scripts for generating, sending, and receiving simple packets. ###
 
 - testPacketGenerator.py -- generate a pcap with random flows and a fixed inter-arrival time. 
 - packetListener.py -- print packets that arrive on a port. 
