@@ -30,7 +30,7 @@ def main():
 	generateRandomIpPackets()
 
 pktId = 1
-def generateRandomIpPackets(duration = 1, rate = 10000000, dumpFile = default_pktTmpFile):
+def generateRandomIpPackets(duration = 1, rate = 100000, dumpFile = default_pktTmpFile):
 	"""
 	Generates random TCP packet with a source and destination IP and ethernet address.
 	"""
@@ -40,7 +40,7 @@ def generateRandomIpPackets(duration = 1, rate = 10000000, dumpFile = default_pk
 	payloadlen = 1400
 	activeFlowCt = 180
 	flowInterArrival = .15
-	print ("generating %s TCP packets per second for %s seconds, with %s byte payloads and %s packets per flow"%(rate, duration, payloadlen, packetsPerFlow))
+	# print ("generating %s TCP packets per second for %s seconds, with %s byte payloads and %s packets per flow"%(rate, duration, payloadlen, packetsPerFlow))
 	eth_src = '\x22\x22\x22\x22\x22\x11'
 	eth_dst = '\x22\x22\x22\x22\x22\x22'
 	payload = "".join([str(i%10) for i in range(payloadlen)]) # for debugging.
