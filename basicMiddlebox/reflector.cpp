@@ -2,8 +2,7 @@
  *
  * Simple libpcap based booster harness. Reads ethernet 
  * packets and sends them out of the same port.
- * Usage: sudo ./passthrough <interface>
- * sudo ./passthrough enp65s0
+ * Usage: sudo ./reflector <interface>
  *
  */
 
