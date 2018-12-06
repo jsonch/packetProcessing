@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
   char * inputFile = argv[1];
   parseFile(inputFile);
   cout << "parsed " << pktCt << " packets" << endl;
+  cout << "trace duration was: " << curTs << "us" << endl;
   return 0;
 }
 
@@ -26,7 +27,8 @@ int main(int argc, char *argv[]){
 void packetHandler(u_char *userData, const struct pcap_pkthdr* pkthdr, const u_char* packet) {
   PacketMetadata pkt = getPktMetadata(userData, pkthdr, packet);
   pktCt++;
-  if (pktCt % 10000000 == 0){
+  if (pktCt % 1000000 == 0){
     cout << "pktCt: " << pktCt << endl;
+    cout << "trace time: " << curTs << endl;
   }
 }

@@ -82,6 +82,10 @@ int parseFile(char * inputFile) {
  *
  */
 PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr, const u_char* packet) {
+  // Parse packet metadata. 
+  PacketMetadata pkt;
+
+
   const struct ether_header* ethernetHeader;
   const struct ip* ipHeader;
   const struct tcphdr* tcpHeader;
@@ -96,6 +100,10 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
     if (ntohs(ethernetHeader->ether_type) == ETHERTYPE_IP) {
         ipHeader = (struct ip*)(packet + sizeof(struct ether_header));
     }
+    else {
+      // std::cout << "unknown header type" << std::endl;
+      return pkt;
+    }
   }
   else if (traceType == 12) {
     ipHeader = (struct ip*)(packet);
@@ -104,8 +112,6 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
     std::cout << "unknown trace type" << std::endl;
   }
 
-  // Parse packet metadata. 
-  PacketMetadata pkt;
   if (ipHeader->ip_p == 6){
     tcpHeader = (tcphdr*)((u_char*)ipHeader + sizeof(*ipHeader));
     setKey(pkt.key, ipHeader, (udphdr*)tcpHeader);
@@ -119,6 +125,7 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
     pkt.payload = (char *)udpHeader + sizeof(*udpHeader);
     pkt.payloadLen = (pkthdr -> len) - sizeof(*ipHeader) - sizeof(*udpHeader);
   }
+
   pkt.keyStr = std::string(pkt.key, KEYLEN);
   pkt.ts = curTs;
 
@@ -132,7 +139,9 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
  *
  */
 uint64_t getMicrosecondTs(uint32_t seconds, uint32_t microSeconds){
-  uint64_t ts = seconds * 1000000 + microSeconds;
+  uint64_t seconds_64 = (uint64_t) seconds;
+  uint64_t microSeconds_64 = (uint64_t) microSeconds;
+  uint64_t ts = seconds_64 * 1000000 + microSeconds_64;
   return ts;
 }
 
