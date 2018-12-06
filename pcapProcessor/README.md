@@ -1,19 +1,8 @@
 ### A templace c++ program for simple packet processing. ###
 
-This is a simple c++ packet processor that tracks per-flow packet counts. It contains the minimal logic needed to analyze pcaps:
-
-- Parse and extract packets.
-- Map packets to flows. 
-- Print hex dumps of packet data. 
-- Track timestamps. 
-
-
+This directory contains c++ pcap analyzers. 
+See minimalProcessor.cpp for a fast, working pcap processor in 30 lines of c++.
 #### Usage: ####
 
-- Compile with makefile ```make packetProcessor```
-- Run ```./packetProcessor ~jsonch/datasets/caida2015/caida2015_02_dirA.pcap```
-
-#### Notes: ####
-
-- Set TRACETYPE to 0 or 1 depending on whether you are using a ethernet or IP pcap. 
-- Add custom processing to the function: ```void packetHandler(PacketMetadata pkt);```
+- Compile with makefile ```make minimalProcessor```
+- Run ```./minimalProcessor ~jsonch/datasets/caida2015/caida2015_02_dirA.pcap```
