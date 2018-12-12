@@ -24,6 +24,7 @@ struct PacketMetadata{
   bool isEth;
   bool isIp;
   bool isTcp;
+  bool isUdp;
 
 };
 
@@ -89,6 +90,10 @@ int parseFile(char * inputFile) {
 PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr, const u_char* packet) {
   // Parse packet metadata. 
   PacketMetadata pkt;
+  pkt.isEth = false;
+  pkt.isIp = false;
+  pkt.isTcp = false;
+  pkt.isUdp = false;
 
 
   const struct ether_header* ethernetHeader;
@@ -108,6 +113,7 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
     ethernetHeader = (struct ether_header*)packet;
     if (ntohs(ethernetHeader->ether_type) == ETHERTYPE_IP) {
       pkt.isEth = true;
+      pkt.isIp = true;
       ipHeader = (struct ip*)(packet + sizeof(struct ether_header));
     }
     else if (ntohs(ethernetHeader->ether_type) == 0x8100){
@@ -118,12 +124,10 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
         ipHeader = (struct ip*)(packet + sizeof(struct ether_header) + VLAN_HDRLEN);
       }
       else {
-        pkt.isIp = false;
         return pkt;
       }
     }
     else {
-      pkt.isEth = false;
       return pkt;
     }
   }
@@ -155,8 +159,8 @@ PacketMetadata getPktMetadata(u_char *userData, const struct pcap_pkthdr* pkthdr
     setKey(pkt.key, ipHeader, (udphdr*)udpHeader);
     pkt.payload = (char *)udpHeader + sizeof(*udpHeader);
     pkt.payloadLen = (pkthdr -> len) - sizeof(*ipHeader) - sizeof(*udpHeader);
+    pkt.isUdp = true;
   }
-
   pkt.keyStr = std::string(pkt.key, KEYLEN); // Waste.
 
   return pkt;
