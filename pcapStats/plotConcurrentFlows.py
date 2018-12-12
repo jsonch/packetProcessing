@@ -34,8 +34,12 @@ def parse(pcapFn, imBaseFn):
 def plot(imBaseFn):
 	imFn = imBaseFn + ".csv"
 	pdfFn = imBaseFn + ".pdf"
+	print ("opening file: %s"%imFn)
 	npLines = np.genfromtxt(open(imFn, "r"), delimiter=",", names=True)
-	plt.plot(npLines['ts'], npLines['activeFlows'])
+	print ("loaded %s lines"%len(npLines))
+	plt.plot(npLines['ts']/(1000000.0), npLines['activeFlows'])
+	plt.xlabel("time (seconds)")
+	plt.ylabel("number of concurrent flows")
 	plt.savefig(pdfFn)
 	plt.show()
 
